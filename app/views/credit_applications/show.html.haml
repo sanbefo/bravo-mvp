@@ -1,0 +1,36 @@
+.max-w-4xl.mx-auto.px-4.py-8
+  -# Navigation Breadcrumbs
+  .mb-6
+    = link_to "← Back to Applications", credit_applications_path, class: "text-accent hover:text-secondary text-sm font-medium transition"
+
+  -# Header Section
+  .flex.justify-between.items-start.mb-8
+    %div
+      %h1.text-3xl.font-bold.text-main-text Application Details
+      %p.text-sm.text-gray-500.mt-1 Viewing record for ID: ##{@application.id}
+
+    -# .flex.gap-3
+    -#   = link_to "Edit", edit_credit_application_path(@application), class: "px-4.py-2.rounded-lg.border.border-gray-300.text-gray-700.hover:bg-gray-50.font-medium.transition"
+    -#   %span{class: "px-4.py-2.rounded-lg.font-bold.shadow-sm #{status_color_class(@application.status)}"}
+    -#     = @application.status.titleize
+
+  -# Data Card
+  .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight
+    .bg-highlight.px-6.py-4
+      %h2.text-primary.font-bold.uppercase.tracking-widest.text-xs Applicant Information
+
+    .p-0
+      -# Row 1: Full Name
+      .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
+        .text-sm.font-semibold.text-primary Full Name
+        .col-span-2.text-main-text.font-medium= @application.full_name
+
+      -# Row 2: Country
+      .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
+        .text-sm.font-semibold.text-primary Country
+        .col-span-2.text-main-text= @application.country
+
+      -# Row 3: Current Status
+      .grid.grid-cols-3.gap-4.px-6.py-5
+        .text-sm.font-semibold.text-primary Review Status
+        .col-span-2.text-main-text= @application.status

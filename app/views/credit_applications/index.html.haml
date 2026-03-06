@@ -1,0 +1,35 @@
+.max-w-6xl.mx-auto.px-4.py-8
+  .flex.justify-between.items-center.mb-8
+    %div
+      %h1.text-3xl.font-bold.text-main-text Credit Applications
+      %p.text-sm.text-gray-500 Manage and review incoming credit requests.
+
+    = link_to new_credit_application_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
+      %span +
+      New Application
+
+  .bg-white.shadow-md.rounded-xl.overflow-hidden.border.border-highlight
+    %table.w-full.text-left.border-collapse
+      %thead.bg-highlight
+        %tr
+          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary ID
+          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Name
+          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Country
+          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Status
+          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Actions
+
+      %tbody.divide-y.divide-highlight
+        - @applications.each do |app|
+          %tr.hover:bg-gray-50.transition-colors
+            %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{app.id}"
+            %td.px-6.py-4
+              .text-sm.font-bold.text-main-text= app.full_name
+            %td.px-6.py-4.text-sm.text-gray-600= (app.country == "mexico" ? 🇲🇽 : 🇵🇹) + " " + app.country
+            %td.px-6.py-4
+              -# Assuming status might be 'pending', 'approved', or 'rejected'
+              -# %span{class: "px-3.py-1.rounded-full.text-xs.font-semibold #{status_color_class(app.status)}"}
+                = app.status.titleize
+            %td.px-6.py-4
+              = link_to credit_application_path(app), class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1" do
+                View
+                %span →
