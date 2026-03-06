@@ -1,24 +1,17 @@
-# README
+# Bravo Credit System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Technical challenge implementation.
 
-Things you may want to cover:
+Stack:
 
-* Ruby version
+- Ruby 3.3
+- Rails 7.1
+- PostgreSQL
+- Redis
+- Sidekiq
+- Hotwire
 
-* System dependencies
+Countries implemented:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Mexico
+- Portugal
