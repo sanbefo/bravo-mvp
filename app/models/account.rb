@@ -2,8 +2,9 @@ class Account < ApplicationRecord
   extend FriendlyId
 
   friendly_id :account_number, use: :slugged
-
   belongs_to :user
+  monetize :balance_cents
+  after_initialize :set_default_balance, if: :new_record?
 
   VALID_COUNTRIES = %w[MX PT].freeze
   VALID_BANKS = ["Banco CH14", "Banco CR7"].freeze
@@ -14,6 +15,10 @@ class Account < ApplicationRecord
   validate :account_number_format
 
   private
+
+  def set_default_balance
+    self.balance ||= Money.new(0)
+  end
 
   def account_number_format
     validator = case country

@@ -14,13 +14,18 @@ class AccountsController < ApplicationController
   end
 
   def create
-    @account = current_user.accounts.new(account_params)
-    authorize @account
+    service = Accounts::Create.new(
+      user: current_user,
+      params: account_params
+    )
 
-    if @account.save
-      render json: @account, status: :created
+    result = service.call
+    authorize result.account if result.success?
+
+    if result.success?
+      render json: result.account, status: :created
     else
-      render json: { errors: @account.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: result.errors }, status: :unprocessable_entity
     end
   end
 
