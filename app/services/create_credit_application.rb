@@ -9,6 +9,8 @@ class CreateCreditApplication
     application.status = :pending
     # here we validate depending on the country the client is from
     validate_country_rules(application)
+    # here we validate depending on the bank the client uses
+    fetch_bank_data(application)
     application.save!
     application
   end
@@ -30,5 +32,10 @@ class CreateCreditApplication
   def validate_country_rules(application)
     validator = CountryRules::Resolver.for(application)
     validator.validate!
+  end
+
+  def fetch_bank_data(application)
+    provider = BankProviders::Resolver.for(application)
+    application.bank_data = provider.fetch_data
   end
 end
