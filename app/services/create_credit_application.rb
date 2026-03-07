@@ -12,6 +12,7 @@ class CreateCreditApplication
     # here we validate depending on the bank the client uses
     fetch_bank_data(application)
     application.save!
+    RiskEvaluationJob.perform_async(application.id)
     application
   end
 
