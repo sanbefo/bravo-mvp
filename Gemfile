@@ -7,6 +7,7 @@ gem "bootsnap", require: false
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 gem "rails", "~> 7.1.3"
+gem 'schema_to_dbml'
 
 # --- FRONTEND & ASSETS ---
 gem "cssbundling-rails"

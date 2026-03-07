@@ -332,6 +332,8 @@ GEM
       rubocop-ast (>= 1.44.0, < 2.0)
     ruby-progressbar (1.13.0)
     rubyzip (3.2.2)
+    schema_to_dbml (0.0.7)
+      activesupport (>= 6.1.0)
     securerandom (0.4.1)
     selenium-webdriver (4.41.0)
       base64 (~> 0.2)
@@ -421,6 +423,7 @@ DEPENDENCIES
   redis (>= 4.0.1)
   rubocop-performance
   rubocop-rails
+  schema_to_dbml
   selenium-webdriver
   sidekiq
   sprockets-rails

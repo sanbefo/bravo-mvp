@@ -7,8 +7,8 @@ class CreateCreditApplications < ActiveRecord::Migration[7.1]
 
       t.decimal :requested_amount, precision: 12, scale: 2, null: false
       t.decimal :monthly_income, precision: 12, scale: 2, null: false
-
-      t.datetime :application_date, null: false
+      t.string :currency, null: false
+      t.datetime :requested_at, null: false
       t.integer :status, null: false, default: 0
 
       t.jsonb :bank_data, default: {}
@@ -18,7 +18,7 @@ class CreateCreditApplications < ActiveRecord::Migration[7.1]
 
     add_index :credit_applications, :country
     add_index :credit_applications, :status
-    add_index :credit_applications, :application_date
+    add_index :credit_applications, :requested_at
     add_index :credit_applications, :document_id
   end
 end

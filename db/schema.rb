@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_07_115214) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_07_130322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,15 +33,27 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_07_115214) do
     t.string "document_id", null: false
     t.decimal "requested_amount", precision: 12, scale: 2, null: false
     t.decimal "monthly_income", precision: 12, scale: 2, null: false
-    t.datetime "application_date", null: false
+    t.string "currency", null: false
+    t.datetime "requested_at", null: false
     t.integer "status", default: 0, null: false
     t.jsonb "bank_data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["application_date"], name: "index_credit_applications_on_application_date"
     t.index ["country"], name: "index_credit_applications_on_country"
     t.index ["document_id"], name: "index_credit_applications_on_document_id"
+    t.index ["requested_at"], name: "index_credit_applications_on_requested_at"
     t.index ["status"], name: "index_credit_applications_on_status"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "users", force: :cascade do |t|
