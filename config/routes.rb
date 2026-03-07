@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   resources :credit_applications, only: %i[index show new create]
   resources :accounts, only: %i[index show create]
+  resources :accounts do
+    get :transactions, on: :member
+  end
+  resources :transactions, only: [:create]
 
   root "credit_applications#index"
 end

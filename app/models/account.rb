@@ -1,9 +1,18 @@
 class Account < ApplicationRecord
   extend FriendlyId
 
-  friendly_id :account_number, use: :slugged
   belongs_to :user
   monetize :balance_cents
+  has_many :outgoing_transactions,
+           class_name: "Transaction",
+           foreign_key: :source_account_id,
+           dependent: :nullify
+
+  has_many :incoming_transactions,
+           class_name: "Transaction",
+           foreign_key: :destination_account_id,
+           dependent: :nullify
+  friendly_id :account_number, use: :slugged
   after_initialize :set_default_balance, if: :new_record?
 
   VALID_COUNTRIES = %w[MX PT].freeze
