@@ -47,4 +47,17 @@ module ApplicationHelper
     # .upcase ensures it works even if you pass "mx" or "pt"
     countries[country_code.upcase] || country_code.upcase
   end
+
+  def sortable_link(column, title)
+    # Toggle direction logic
+    direction = (column == params[:sort] && params[:direction] == "asc") ? "desc" : "asc"
+
+    # Add an arrow icon if this column is currently being sorted
+    icon = ""
+    if column == params[:sort]
+      icon = params[:direction] == "asc" ? " ↑" : " ↓"
+    end
+
+    link_to "#{title}#{icon}".html_safe, { sort: column, direction: direction }, class: "hover:text-secondary transition-colors"
+  end
 end

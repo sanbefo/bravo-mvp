@@ -11,10 +11,14 @@
     %table.w-full.text-left.border-collapse
       %thead.bg-highlight
         %tr
-          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary ID
-          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Name
-          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Country
-          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Status
+          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+            = sortable_link "id", "ID"
+          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+            = sortable_link "full_name", "Applicant"
+          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+            = sortable_link "country", "Country"
+          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+            = sortable_link "status", "Status"
           %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Actions
       %tbody.divide-y.divide-highlight
         - @applications.each do |app|

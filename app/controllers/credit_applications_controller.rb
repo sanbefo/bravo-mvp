@@ -1,6 +1,10 @@
 class CreditApplicationsController < ApplicationController
   def index
-    @applications = CreditApplication.all
+    sortable_columns = %w[id full_name country status requested_amount]
+    column = sortable_columns.include?(params[:sort]) ? params[:sort] : "created_at"
+    direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+
+    @applications = CreditApplication.order("#{column} #{direction}")
   end
 
   def show
