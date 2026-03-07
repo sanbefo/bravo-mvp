@@ -22,9 +22,12 @@
             %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{app.id}"
             %td.px-6.py-4
               .text-sm.font-bold.text-main-text= app.full_name
-            %td.px-6.py-4.text-sm.text-gray-600= app.country
+            %td.px-6.py-4.text-sm.text-gray-600
+              .flex.items-center.gap-3
+                = flag_for(app.country)
+                %span.text-sm.font-bold.text-text-main= country_name(app.country)
             %td.px-6.py-4
-              = app.status
+              = status_badge(app.status)
             %td.px-6.py-4
               = link_to credit_application_path(app), class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1" do
                 View
