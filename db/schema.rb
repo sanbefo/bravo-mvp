@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_07_152036) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_07_190027) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,10 +41,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_07_152036) do
     t.jsonb "bank_data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["country"], name: "index_credit_applications_on_country"
     t.index ["document_id"], name: "index_credit_applications_on_document_id"
     t.index ["requested_at"], name: "index_credit_applications_on_requested_at"
     t.index ["status"], name: "index_credit_applications_on_status"
+    t.index ["user_id"], name: "index_credit_applications_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_07_152036) do
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "credit_applications", "users"
   add_foreign_key "transactions", "accounts", column: "destination_account_id"
   add_foreign_key "transactions", "accounts", column: "source_account_id"
 end

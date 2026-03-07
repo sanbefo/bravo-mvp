@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   extend FriendlyId
 
+  # devise :database_authenticable, :jwt_authenticable, jwt_revocation_strategy: self
+
   friendly_id :username, use: :slugged
   # 1. Ensure username is unique and present (for the slug)
   validates :username, presence: true, uniqueness: true
@@ -10,15 +12,20 @@ class User < ApplicationRecord
   before_validation :generate_initial_username, on: :create
 
   has_many :accounts, dependent: :destroy, inverse_of: :user
+  has_many :credit_applications, dependent: :destroy, inverse_of: :user
 
   # 3. Use the username for URLs (slug)
   def to_param
     username
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
 
-  def generate_initial_username
+    def generate_initial_username
     return if username.present? # Allow manual entry if provided in the form
 
     # Format: john_doe_1234

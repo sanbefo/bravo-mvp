@@ -20,3 +20,45 @@
         --white: #ffffff;
     }
 }
+
+.main-header {
+    background-color: #0b0b3c;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.header-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-logo {
+    height: 34px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.login-button {
+    background: linear-gradient(135deg, #3ec7c3, #4fd1c5);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 15px;
+
+    transition: opacity 0.2s ease;
+}
+
+.login-button:hover {
+    opacity: 0.9;
+}

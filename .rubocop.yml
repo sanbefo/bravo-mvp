@@ -11,6 +11,7 @@ AllCops:
     - "bin/**/*"
     - "db/schema.rb"
     - "db/migrate/*"
+    - "test/*"
     - "config/environments/*"
     - "config/initializers/devise.rb"
     - "node_modules/**/*"

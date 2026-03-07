@@ -40,6 +40,7 @@ end
 # --- DEVELOPMENT ONLY ---
 group :development do
   gem "annotate"
+  gem "rails-erd"
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem "web-console"

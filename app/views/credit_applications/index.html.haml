@@ -1,4 +1,23 @@
 .max-w-6xl.mx-auto.px-4.py-8
+  .mb-6.flex.justify-end
+    .w-full.max-w-xs
+      = label_tag :country_filter, "Filter by Country", class: "block text-xs font-bold text-primary uppercase tracking-widest mb-2"
+
+      = form_with url: credit_applications_path, method: :get, data: { turbo_frame: "applications_table", turbo_action: "advance" }, class: "relative" do |f|
+        -# Keep the current sorting if the user filters
+        = hidden_field_tag :sort, params[:sort]
+        = hidden_field_tag :direction, params[:direction]
+
+        = f.select :country,
+          [["All Countries", ""], ["🇲🇽 Mexico", "MX"], ["🇵🇹 Portugal", "PT"]],
+          { selected: params[:country] },
+          { class: "w-full pl-4 pr-10 py-2.5 bg-white border border-highlight rounded-xl shadow-sm focus:ring-2 focus:ring-accent focus:border-accent appearance-none text-sm font-medium text-text-main cursor-pointer",
+            onchange: "this.form.requestSubmit()" }
+
+        -# Custom Chevron Icon
+        .pointer-events-none.absolute.inset-y-0.right-0.flex.items-center.px-3.text-primary
+          %svg.w-4.h-4{fill: "none", stroke: "currentColor", viewBox: "0 0 24 24"}
+            %path{d: "M19 9l-7 7-7-7", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round"}
   .flex.justify-between.items-center.mb-8
     %div
       %h1.text-3xl.font-bold.text-main-text Credit Applications
@@ -7,32 +26,33 @@
       %span +
       New Application
 
-  .bg-white.shadow-md.rounded-xl.overflow-hidden.border.border-highlight
-    %table.w-full.text-left.border-collapse
-      %thead.bg-highlight
-        %tr
-          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
-            = sortable_link "id", "ID"
-          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
-            = sortable_link "full_name", "Applicant"
-          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
-            = sortable_link "country", "Country"
-          %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
-            = sortable_link "status", "Status"
-          %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Actions
-      %tbody.divide-y.divide-highlight
-        - @applications.each do |app|
-          %tr.hover:bg-gray-50.transition-colors
-            %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{app.id}"
-            %td.px-6.py-4
-              .text-sm.font-bold.text-main-text= app.full_name
-            %td.px-6.py-4.text-sm.text-gray-600
-              .flex.items-center.gap-3
-                = flag_for(app.country)
-                %span.text-sm.font-bold.text-text-main= country_name(app.country)
-            %td.px-6.py-4
-              = status_badge(app.status)
-            %td.px-6.py-4
-              = link_to credit_application_path(app), class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1" do
-                View
-                %span →
+  = turbo_frame_tag "applications_table" do
+    .bg-white.shadow-md.rounded-xl.overflow-hidden.border.border-highlight
+      %table.w-full.text-left.border-collapse
+        %thead.bg-highlight
+          %tr
+            %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+              = sortable_link "id", "ID"
+            %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+              = sortable_link "full_name", "Applicant"
+            %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+              = sortable_link "country", "Country"
+            %th.px-6.py-5.text-xs.font-black.uppercase.tracking-widest.text-primary
+              = sortable_link "status", "Status"
+            %th.px-6.py-4.text-xs.font-bold.uppercase.tracking-wider.text-primary Actions
+        %tbody.divide-y.divide-highlight
+          - @applications.each do |app|
+            %tr.hover:bg-gray-50.transition-colors
+              %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{app.id}"
+              %td.px-6.py-4
+                .text-sm.font-bold.text-main-text= app.user.username.titleize
+              %td.px-6.py-4.text-sm.text-gray-600
+                .flex.items-center.gap-3
+                  = flag_for(app.country)
+                  %span.text-sm.font-bold.text-text-main= country_name(app.country)
+              %td.px-6.py-4
+                = status_badge(app.status)
+              %td.px-6.py-4
+                = link_to credit_application_path(app), class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1" do
+                  View
+                  %span →

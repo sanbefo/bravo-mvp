@@ -1,0 +1,9 @@
+%header.main-header
+  .header-container
+    .header-left
+      = link_to root_path do
+        = image_tag "logo.png", class: "header-logo", alt: "Bravo"
+
+    -# .header-right
+    -#   - unless user_signed_in?
+    -#     = link_to "Log In", new_user_session_path, class: "login-button"
