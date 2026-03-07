@@ -6,6 +6,10 @@
     %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
     = csrf_meta_tags
     = csp_meta_tag
+
+    -# This is usually the missing piece for Tailwind-Rails
+    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
+
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_include_tag "application", "data-turbo-track": "reload", type: "module"
   %body

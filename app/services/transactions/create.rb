@@ -9,6 +9,9 @@ module Transactions
     end
 
     def call
+      validate_accounts!
+      validate_currency!
+
       ActiveRecord::Base.transaction do
         validate_balance!
 

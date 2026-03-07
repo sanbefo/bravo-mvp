@@ -29,6 +29,20 @@ class AccountsController < ApplicationController
     end
   end
 
+  def transactions
+    account = current_user.accounts.friendly.find(params[:id])
+    authorize account
+
+    transactions = Transaction
+                   .where(
+                     "source_account_id = :id OR destination_account_id = :id",
+                     id: account.id
+                   )
+                   .order(created_at: :desc)
+
+    render json: transactions
+  end
+
   private
 
   def set_account

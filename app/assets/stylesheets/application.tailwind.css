@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+    /* This maps your custom variables to Tailwind utility classes */
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-text-main: var(--text-main);
+    --color-accent: var(--accent);
+    --color-highlight: var(--highlight);
+}
+
 @layer base {
     :root {
         --primary: #2f2f6d;

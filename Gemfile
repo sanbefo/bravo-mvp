@@ -53,3 +53,5 @@ end
 
 # --- PLATFORM SPECIFIC ---
 gem "tzinfo-data", platforms: %i[windows jruby]
+
+gem "tailwindcss-rails", "~> 4.4"
