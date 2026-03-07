@@ -1,5 +1,4 @@
 class CreditApplicationsController < ApplicationController
-
   def index
     @applications = CreditApplication.all
   end

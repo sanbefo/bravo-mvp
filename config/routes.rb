@@ -8,12 +8,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :credit_applications, only: [
-    :index,
-    :show,
-    :new,
-    :create
-  ]
+  resources :credit_applications, only: %i[index show new create]
 
   root "credit_applications#index"
 end

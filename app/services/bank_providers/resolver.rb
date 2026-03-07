@@ -1,11 +1,11 @@
-module CountryRules
+module BankProviders
   class Resolver
     def self.for(application)
       case application.country
       when "mexico"
-        MexicoValidator.new(application)
+        MexicoProvider.new(application)
       when "portugal"
-        PortugalValidator.new(application)
+        PortugalProvider.new(application)
       else
         raise "Unsupported country"
       end

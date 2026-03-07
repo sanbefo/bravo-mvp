@@ -1,0 +1,50 @@
+# Use plugins for Rails-specific and Performance-specific checks
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  # Ignore all the "boilerplate" and temporary files
+  Exclude:
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "db/migrate/*"
+    - "config/environments/*"
+    - "config/initializers/devise.rb"
+    - "node_modules/**/*"
+    - "vendor/**/*"
+    - "tmp/**/*"
+    - "lib/tasks/*.rake"
+
+# --- Customizing "Unimportant" Rules ---
+
+# Rails 7 doesn't strictly need this anymore for every file
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Don't complain if a block (like in a migration or route) is long
+Metrics/BlockLength:
+  Exclude:
+    - "config/routes.rb"
+    - "spec/**/*"
+    - "Guardfile"
+
+# Documentation is great, but RuboCop's requirement is often too annoying for small apps
+Style/Documentation:
+  Enabled: false
+
+# Let us use double quotes or single quotes as we prefer
+Style/StringLiterals:
+  Enabled: false
+
+# Allow us to use "fail" or "raise" interchangeably
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# Don't worry about method length in tests
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*"
+    - "test/**/*"

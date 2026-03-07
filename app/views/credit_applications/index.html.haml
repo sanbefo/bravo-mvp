@@ -24,11 +24,9 @@
             %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{app.id}"
             %td.px-6.py-4
               .text-sm.font-bold.text-main-text= app.full_name
-            %td.px-6.py-4.text-sm.text-gray-600= (app.country == "mexico" ? 🇲🇽 : 🇵🇹) + " " + app.country
+            %td.px-6.py-4.text-sm.text-gray-600= app.country
             %td.px-6.py-4
-              -# Assuming status might be 'pending', 'approved', or 'rejected'
-              -# %span{class: "px-3.py-1.rounded-full.text-xs.font-semibold #{status_color_class(app.status)}"}
-                = app.status.titleize
+              = app.status
             %td.px-6.py-4
               = link_to credit_application_path(app), class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1" do
                 View
