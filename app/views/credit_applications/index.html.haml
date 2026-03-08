@@ -22,9 +22,10 @@
     %div
       %h1.text-3xl.font-bold.text-main-text Credit Applications
       %p.text-sm.text-gray-500 Manage and review incoming credit requests.
-    = link_to new_credit_application_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
-      %span +
-      New Application
+    - unless current_user.credit_applications.pending.exists?
+      = link_to new_credit_application_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
+        %span +
+        New Application
 
   = turbo_frame_tag "applications_table" do
     .bg-white.shadow-md.rounded-xl.overflow-hidden.border.border-highlight
@@ -53,6 +54,6 @@
               %td.px-6.py-4
                 = status_badge(app.status)
               %td.px-6.py-4
-                = link_to credit_application_path(app), class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1" do
+                = link_to app, class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1", data: { turbo: false } do
                   View
                   %span →

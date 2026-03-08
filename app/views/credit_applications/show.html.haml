@@ -1,36 +1,60 @@
 .max-w-4xl.mx-auto.px-4.py-8
-  -# Navigation Breadcrumbs
   .mb-6
     = link_to "← Back to Applications", credit_applications_path, class: "text-accent hover:text-secondary text-sm font-medium transition"
-
-  -# Header Section
   .flex.justify-between.items-start.mb-8
     %div
       %h1.text-3xl.font-bold.text-main-text Application Details
       %p.text-sm.text-gray-500.mt-1 Viewing record for ID: ##{@application.id}
-
-    -# .flex.gap-3
-    -#   = link_to "Edit", edit_credit_application_path(@application), class: "px-4.py-2.rounded-lg.border.border-gray-300.text-gray-700.hover:bg-gray-50.font-medium.transition"
-    -#   %span{class: "px-4.py-2.rounded-lg.font-bold.shadow-sm #{status_color_class(@application.status)}"}
-    -#     = @application.status
-
-  -# Data Card
+    .flex.gap-3
+      = link_to "Edit", edit_credit_application_path(@application), class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2"
   .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight
     .bg-highlight.px-6.py-4
       %h2.text-primary.font-bold.uppercase.tracking-widest.text-xs Applicant Information
-
     .p-0
-      -# Row 1: Full Name
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Full Name
         .col-span-2.text-main-text.font-medium= @application.full_name
-
-      -# Row 2: Country
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Country
-        .col-span-2.text-main-text= @application.country
-
-      -# Row 3: Current Status
-      .grid.grid-cols-3.gap-4.px-6.py-5
+        .col-span-2.text-main-text.flex.items-center.gap-2
+          = flag_for(@application.country)
+          %span.text-sm.font-bold.text-text-main= country_name(@application.country)
+      .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Review Status
-        .col-span-2.text-main-text= @application.status
+        .col-span-2.text-main-text= status_badge(@application.status)
+      .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
+        .text-sm.font-semibold.text-primary Document ID
+        .col-span-2.text-main-text= @application.document_id
+      .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
+        .text-sm.font-semibold.text-primary Requested Amount
+        .col-span-2.text-main-text.font-bold.text-accent
+          = number_to_currency(@application.requested_amount)
+      .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
+        .text-sm.font-semibold.text-primary Requested At
+        .col-span-2.text-main-text= @application.requested_at.strftime("%B %d, %Y")
+
+  .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight
+    .bg-highlight.px-6.py-4
+      %h2.text-primary.font-bold.uppercase.tracking-widest.text-xs Banking Information
+    .bg-white.shadow-lg.rounded-2xl.overflow-hidden.border.border-highlight
+      %table.min-w-full.divide-y.divide-highlight
+        %thead.bg-gray-50
+          %tr
+            %th.px-6.py-3.text-left.text-xs.font-bold.text-gray-400.uppercase.tracking-widest Field
+            %th.px-6.py-3.text-left.text-xs.font-bold.text-gray-400.uppercase.tracking-widest Details
+        %tbody.divide-y.divide-highlight
+        - @application.bank_data.each do |key, value|
+          %tr
+            %td.px-6.py-4.whitespace-nowrap.text-sm.font-semibold.text-primary.bg-gray-50
+              = key.to_s.titleize
+              %td.px-6.py-4.text-sm.text-main-text
+                - if key.to_s.underscore == "account_number"
+                  -# Render the formatted version with the clipboard controller
+                  .flex.items-center.justify-between(data-controller="clipboard")
+                    %span.font-mono.font-bold.text-lg.tracking-tight(data-clipboard-target="source")
+                      = format_account_number(value, @application.country)
+                    %button.text-accent.hover:text-primary(data-action="click->clipboard#copy" data-clipboard-target="button")
+                      %svg.w-5.h-5(fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                        %path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z")
+                - else
+                  = value

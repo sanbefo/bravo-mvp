@@ -5,6 +5,19 @@ puts "Generating 100 credit applications..."
 CreditApplication.destroy_all
 User.destroy_all
 
+user = User.create!(
+  first_name: "Santiago",
+  last_name: "Bermudez",
+  username: "sanbefo",
+  # Use the document logic you had before
+  document: country = Faker::Base.regexify(/[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9]{2}/),
+  slug: Faker::Internet.slug(words: "Santiago Bermudez #{SecureRandom.hex(3)}"),
+  email: "santiago@bravo.com",
+  password: "muybravo",
+  role: :admin
+)
+allowed_domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'icloud.com']
+
 100.times do |i|
   # 1. Determine Country First
   country = ["MX", "PT"].sample
@@ -13,14 +26,16 @@ User.destroy_all
   # We use the country-specific Faker logic for names/usernames
   first_name = Faker::Name.first_name
   last_name = Faker::Name.last_name
-
+  random_domain = allowed_domains.sample
   user = User.create!(
     first_name: first_name,
     last_name: last_name,
     username: Faker::Internet.username(specifier: "#{first_name} #{last_name}", separators: %w(. _)),
     # Use the document logic you had before
     document: country == "MX" ? Faker::Base.regexify(/[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9]{2}/) : Faker::Number.number(digits: 9).to_s,
-    slug: Faker::Internet.slug(words: "#{first_name} #{last_name} #{SecureRandom.hex(3)}")
+    slug: Faker::Internet.slug(words: "#{first_name} #{last_name} #{SecureRandom.hex(3)}"),
+    email: Faker::Internet.email(name: first_name + " " + last_name, domain: random_domain),
+    password: Faker::Internet.password
   )
 
   # 3. Define Country-Specific Logic

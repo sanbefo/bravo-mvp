@@ -1,7 +1,17 @@
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
   extend FriendlyId
-
-  # devise :database_authenticable, :jwt_authenticable, jwt_revocation_strategy: self
+  enum role: { user: 0, admin: 1 }
+  devise :database_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :validatable,
+         :jwt_authenticatable,
+         jwt_revocation_strategy: JwtDenylist
 
   friendly_id :username, use: :slugged
   # 1. Ensure username is unique and present (for the slug)

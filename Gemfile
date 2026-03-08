@@ -56,3 +56,5 @@ end
 gem "tzinfo-data", platforms: %i[windows jruby]
 
 gem "tailwindcss-rails", "~> 4.4"
+
+gem "devise-jwt", "~> 0.13.0"

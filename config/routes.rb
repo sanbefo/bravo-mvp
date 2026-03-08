@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'accounts/index'
   get 'accounts/show'
   get 'accounts/create'
@@ -11,7 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :credit_applications, only: %i[index show new create]
+  resources :credit_applications, only: %i[index show new create edit]
   resources :accounts, only: %i[index show create]
   resources :accounts do
     get :transactions, on: :member

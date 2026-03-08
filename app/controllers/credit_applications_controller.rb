@@ -1,4 +1,6 @@
 class CreditApplicationsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     sortable_columns = %w[id full_name country status requested_amount]
     column = sortable_columns.include?(params[:sort]) ? params[:sort] : "created_at"
@@ -12,16 +14,27 @@ class CreditApplicationsController < ApplicationController
 
   def show
     @application = CreditApplication.find(params[:id])
+
+    unless current_user.admin? || @application.user == current_user
+      redirect_to root_path
+    end
   end
 
   def new
+    if current_user.credit_applications.pending.exists?
+      redirect_to credit_applications_path, alert: "You already have a pending application"
+      return
+    end
+
     @application = CreditApplication.new
   end
 
   def create
-    service = CreateCreditApplication.new(application_params)
+    @application = current_user.applications.build(application_params)
+    @application.status = :pending
 
-    @application = service.call
+    # service = CreateCreditApplication.new(application_params)
+    # @application = service.call
 
     redirect_to @application
   rescue => e

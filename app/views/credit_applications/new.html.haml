@@ -9,7 +9,12 @@
     = form_with model: @application, class: "space-y-6" do |f|
       .space-y-2
         = f.label :country, class: "block text-sm font-semibold text-primary"
-        = f.select :country, CreditApplication.countries.keys, {}, class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+        = f.select :country,
+          [["🇲🇽 Mexico", "MX"], ["🇵🇹 Portugal", "PT"]],
+          { selected: params[:country] },
+          { class: "w-full pl-4 pr-10 py-2.5 bg-white border border-highlight rounded-xl shadow-sm focus:ring-2 focus:ring-accent focus:border-accent appearance-none text-sm font-medium text-text-main cursor-pointer",
+            onchange: "this.form.requestSubmit()" }
+
       .space-y-2
         = f.label :full_name, class: "block text-sm font-semibold text-primary"
         = f.text_field :full_name, placeholder: "John Doe", class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"

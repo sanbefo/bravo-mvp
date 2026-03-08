@@ -16,8 +16,7 @@ class Account < ApplicationRecord
   after_initialize :set_default_balance, if: :new_record?
 
   VALID_COUNTRIES = %w[MX PT].freeze
-  VALID_BANKS = ["Banco CH14", "Banco CR7"].freeze
-
+  VALID_BANKS = ["Millennium BCP", "CGD", "Novo Banco", "BPI", "BBVA", "Banorte", "Santander", "Citibanamex"].freeze
   validates :bank_name, presence: true, inclusion: { in: VALID_BANKS }
   validates :account_number, presence: true, uniqueness: true
   validates :country, presence: true, inclusion: { in: VALID_COUNTRIES }
