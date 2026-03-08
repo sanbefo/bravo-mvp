@@ -1,0 +1,42 @@
+-# app/views/credit_applications/_form.html.haml
+= form_with model: application, class: "space-y-6" do |f|
+  -# Error Handling (Crucial for Edit)
+  - if application.errors.any?
+    .bg-red-50.p-4.rounded-xl.border.border-red-200.mb-4
+      %h3.text-sm.font-bold.text-red-800 Please fix the errors below:
+      %ul.text-xs.text-red-700.list-disc.list-inside
+        - application.errors.full_messages.each do |msg|
+          %li= msg
+
+  .space-y-2
+    = f.label :country, class: "block text-sm font-semibold text-primary"
+    = f.select :country, [["🇲🇽 Mexico", "MX"], ["🇵🇹 Portugal", "PT"]], { selected: application.country || params[:country] }, { class: "w-full pl-4 pr-10 py-2.5 bg-white border border-highlight rounded-xl shadow-sm focus:ring-2 focus:ring-accent focus:border-accent appearance-none text-sm font-medium text-text-main cursor-pointer", onchange: "this.form.requestSubmit()" }
+
+  .space-y-2
+    = f.label :full_name, class: "block text-sm font-semibold text-primary"
+    = f.text_field :full_name, placeholder: "John Doe", class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+
+  .space-y-2
+    = f.label :document_id, "Official ID / Document Number", class: "block text-sm font-semibold text-primary"
+    = f.text_field :document_id, placeholder: "e.g. 123456789", class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+
+  .pt-4.border-t.border-highlight
+    .grid.grid-cols-1.md:grid-cols-2.gap-6
+      .space-y-2
+        = f.label :requested_amount, "Requested Amount ($)", class: "block text-sm font-semibold text-primary"
+        .relative
+          .absolute.inset-y-0.left-0.pl-3.flex.items-center.pointer-events-none
+            %span.text-gray-500.sm:text-sm $
+          = f.number_field :requested_amount, class: "w-full rounded-lg border-gray-300 pl-7 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+
+      .space-y-2
+        = f.label :monthly_income, "Monthly Income ($)", class: "block text-sm font-semibold text-primary"
+        .relative
+          .absolute.inset-y-0.left-0.pl-3.flex.items-center.pointer-events-none
+            %span.text-gray-500.sm:text-sm $
+          = f.number_field :monthly_income, class: "w-full rounded-lg border-gray-300 pl-7 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+
+  .pt-6
+    = f.submit (application.new_record? ? "Submit Application" : "Update Application"), class: "w-full bg-primary hover:bg-secondary text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-0.5 cursor-pointer"
+    .mt-4.text-center
+      = link_to "Cancel and return", credit_applications_path, class: "text-sm text-gray-400 hover:text-primary transition"

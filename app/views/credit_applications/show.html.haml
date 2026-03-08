@@ -5,8 +5,9 @@
     %div
       %h1.text-3xl.font-bold.text-main-text Application Details
       %p.text-sm.text-gray-500.mt-1 Viewing record for ID: ##{@application.id}
-    .flex.gap-3
-      = link_to "Edit", edit_credit_application_path(@application), class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2"
+    - if @application.pending?
+      .flex.gap-3
+        = link_to "Edit", edit_credit_application_path(@application), class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2"
   .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight
     .bg-highlight.px-6.py-4
       %h2.text-primary.font-bold.uppercase.tracking-widest.text-xs Applicant Information

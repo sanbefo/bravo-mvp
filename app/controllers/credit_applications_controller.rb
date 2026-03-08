@@ -29,6 +29,19 @@ class CreditApplicationsController < ApplicationController
     @application = CreditApplication.new
   end
 
+  def edit
+    @application = CreditApplication.find(params[:id])
+
+    unless current_user.admin? || @application.user == current_user
+      redirect_to credit_applications_path, alert: "Not authorized"
+      return
+    end
+
+    unless @application.pending?
+      redirect_to @application, alert: "Application cannot be edited"
+    end
+  end
+
   def create
     @application = current_user.applications.build(application_params)
     @application.status = :pending
