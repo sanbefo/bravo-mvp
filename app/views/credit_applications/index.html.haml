@@ -23,6 +23,9 @@
       %h1.text-3xl.font-bold.text-main-text Credit Applications
       %p.text-sm.text-gray-500 Manage and review incoming credit requests.
     - unless current_user.credit_applications.pending.exists?
+      = link_to users_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
+        View All Users
+    - unless current_user.credit_applications.pending.exists?
       = link_to new_credit_application_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
         %span +
         New Application

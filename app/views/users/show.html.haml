@@ -1,0 +1,53 @@
+.max-w-4xl.mx-auto.px-4.py-8
+  .mb-6.flex.justify-between.items-center
+    = link_to "← Back to Users", users_path, class: "text-accent hover:text-secondary text-sm font-medium transition"
+    .flex.gap-2
+      = link_to "Edit User", edit_user_path(@user.slug), class: "text-xs bg-highlight text-primary px-4 py-2 rounded-lg font-bold hover:bg-gray-200 transition"
+
+  -# Header / Profile Summary
+  .flex.justify-between.items-start.mb-8
+    .flex.items-center.gap-5
+      %div
+        %h1.text-3xl.font-bold.text-main-text= "#{@user.first_name} #{@user.last_name}".titleize
+        %p.text-sm.text-gray-500.mt-1
+          User ID:
+          %span.font-mono.font-bold.text-primary ##{@user.id}
+
+  .grid.grid-cols-1.lg:grid-cols-3.gap-8
+    -# Left Column: User Profile Data
+    .lg:col-span-2.space-y-6
+      .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight
+        .bg-highlight.px-6.py-4
+          %h2.text-primary.font-bold.uppercase.tracking-widest.text-xs Personal Information
+        .p-0.divide-y.divide-highlight
+          .grid.grid-cols-3.gap-4.px-6.py-5
+            .text-sm.font-semibold.text-primary Email Address
+            .col-span-2.text-main-text= @user.email
+          .grid.grid-cols-3.gap-4.px-6.py-5
+            .text-sm.font-semibold.text-primary Document ID
+            .col-span-2
+              %span.font-mono.font-bold.text-accent= @user.document.presence || "Not Provided"
+
+          .grid.grid-cols-3.gap-4.px-6.py-5
+            .text-sm.font-semibold.text-primary Member Since
+            .col-span-2.text-main-text= @user.created_at.strftime("%B %d, %Y")
+
+          .grid.grid-cols-3.gap-4.px-6.py-5
+            .text-sm.font-semibold.text-primary Last Update
+            .col-span-2.text-main-text= @user.updated_at.strftime("%B %d, %Y at %H:%M")
+    .space-y-6
+      .bg-white.shadow-xl.rounded-2xl.p-6.border.border-highlight.text-center
+        %h3.text-xs.font-bold.text-gray-400.uppercase.tracking-widest.mb-4 Total Applications
+        .text-5xl.font-black.text-primary= @user.credit_applications.count
+  .mt-10
+    .flex.items-center.justify-between.mb-4
+      %h2.text-xl.font-bold.text-primary Credit Applications
+    -# - if @user.credit_applications.any?
+    -#   .bg-white.shadow-lg.rounded-2xl.overflow-hidden.border.border-highlight
+    -#     %table.min-w-full.divide-y.divide-highlight
+    -#       %thead.bg-gray-50
+    -#         %tr
+    -#           %th.px-6.py-3.text-left.text-xs.font-bold.text-gray-400.uppercase App ID
+    -#           %th.px-6.py-3.text-left.text-xs.font-bold.text-gray-400.uppercase Amount
+    -#           %th.px-6.py-3.text-left.text-xs.font-bold.text-gray-400.uppercase Status
+    -#           %th.px-6.py-3.text-right.text-xs.font-bold.text-gray-400.

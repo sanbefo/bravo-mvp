@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'users/index'
+  get 'users/show'
+  get 'users/edit'
   devise_for :users
   get 'accounts/index'
   get 'accounts/show'
@@ -13,6 +16,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :credit_applications, only: %i[index show new create edit]
+  resources :users, only: %i[index show edit]
   resources :accounts, only: %i[index show create]
   resources :accounts do
     get :transactions, on: :member
