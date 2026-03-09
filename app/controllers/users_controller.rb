@@ -24,4 +24,24 @@ class UsersController < ApplicationController
       redirect_to root_path
     end
   end
+
+  def create
+    user = User.create!(user_params)
+
+    SlackNotificationJob.perform_async(
+      "New user created: #{user.email}"
+    )
+
+    render json: user, status: :created
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(
+      :email,
+      :password,
+      :name
+    )
+  end
 end

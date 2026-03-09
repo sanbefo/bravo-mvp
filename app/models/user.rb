@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  after_create :notify_slack
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   extend FriendlyId
@@ -35,7 +37,11 @@ class User < ApplicationRecord
 
   private
 
-    def generate_initial_username
+  def notify_slack
+    SlackNotificationJob.perform_async(id)
+  end
+
+  def generate_initial_username
     return if username.present? # Allow manual entry if provided in the form
 
     # Format: john_doe_1234

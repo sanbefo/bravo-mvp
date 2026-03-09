@@ -1,0 +1,10 @@
+# config/sidekiq.yml
+---
+:concurrency: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+:queues:
+  - [critical, 3] # Priority 3 (High)
+  - [default, 2] # Priority 2
+  - [low, 1] # Priority 1 (Low)
+
+production:
+  :concurrency: 10 # Increase for production pods

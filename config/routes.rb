@@ -23,5 +23,8 @@ Rails.application.routes.draw do
   end
   resources :transactions, only: [:create]
 
+  namespace :api do
+    post "slack/new-user", to: "slack#new-users"
+  end
   root "credit_applications#index"
 end
