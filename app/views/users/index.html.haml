@@ -54,3 +54,6 @@
                   = link_to user_path(user.slug), class: "text-accent hover:text-secondary font-bold text-sm flex items-center gap-1", data: { turbo: false } do
                     View
                     %span →
+          .mt-8.flex.justify-center.pb-8
+            .pagy-custom
+              != pagy_nav(@pagy) if @pagy.pages > 1

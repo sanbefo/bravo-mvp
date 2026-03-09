@@ -23,7 +23,6 @@ class CreditApplicationsController < ApplicationController
     end
 
     pagy_headers_merge(@pagy)
-
     respond_to do |format|
       format.html
       format.json do

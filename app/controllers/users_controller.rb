@@ -7,15 +7,22 @@ class UsersController < ApplicationController
     direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
     query = params[:query]
 
-    cache_key = "users:index:#{query}:#{column}:#{direction}"
-    @users = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      users = User.all
-      if query.present?
-        users = users.where("first_name ILIKE ?", "%#{query}%")
-      end
+    scope = User.all
+    scope = scope.where("first_name ILIKE ? OR email ILIKE ?", "%#{query}%", "%#{query}%") if query.present?
 
-      users.order("#{column} #{direction}").to_a
+    count_cache_key = "users:count:q:#{query}"
+    total_count = Rails.cache.fetch(count_cache_key, expires_in: 30.minutes) do
+      scope.count
     end
+
+    @pagy, users_scope = pagy(scope.order("#{column} #{direction}"), count: total_count)
+
+    results_cache_key = "users:results:p#{@pagy.page}:i#{@pagy.vars[:items]}:q:#{query}:s:#{column}:d:#{direction}"
+    @users = Rails.cache.fetch(results_cache_key, expires_in: 10.minutes) do
+      users_scope.to_a
+    end
+
+    pagy_headers_merge(@pagy)
   end
 
   def show
@@ -33,23 +40,25 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
+    @user = User.new(user_params)
 
-    if user.save
-      Rails.cache.delete_matched("users:index*")
-      render json: user, status: :created
+    if @user.save
+      Rails.cache.delete_matched("users:*")
+      respond_to do |format|
+        format.html { redirect_to @user, notice: "User created." }
+        format.json { render json: @user, status: :created }
+      end
     else
-      render json: user.errors, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   private
 
   def user_params
-    params.require(:user).permit(
-      :email,
-      :password,
-      :name
-    )
+    params.require(:user).permit(:email, :password, :name)
   end
 end
