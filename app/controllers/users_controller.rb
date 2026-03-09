@@ -5,10 +5,17 @@ class UsersController < ApplicationController
     sortable_columns = %w[id first_name email created_at]
     column = sortable_columns.include?(params[:sort]) ? params[:sort] : "created_at"
     direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    query = params[:query]
 
-    @users = User.all
-    @users = params[:query].present? ? User.where("first_name ILIKE ?", "%#{params[:query]}%") : User.all
-    @users = @users.order("#{column} #{direction}")
+    cache_key = "users:index:#{query}:#{column}:#{direction}"
+    @users = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
+      users = User.all
+      if query.present?
+        users = users.where("first_name ILIKE ?", "%#{query}%")
+      end
+
+      users.order("#{column} #{direction}").to_a
+    end
   end
 
   def show
@@ -26,13 +33,14 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.create!(user_params)
+    user = User.new(user_params)
 
-    SlackNotificationJob.perform_async(
-      "New user created: #{user.email}"
-    )
-
-    render json: user, status: :created
+    if user.save
+      Rails.cache.delete_matched("users:index*")
+      render json: user, status: :created
+    else
+      render json: user.errors, status: :unprocessable_entity
+    end
   end
 
   private

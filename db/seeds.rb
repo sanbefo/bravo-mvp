@@ -75,7 +75,7 @@ allowed_domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'icloud.com']
     app_params.merge(
       full_name: user.full_name, # Syncing name from user record
       document_id: user.document, # Syncing document from user record
-      status: CreditApplication.statuses.keys.sample,
+      status: :pending,
       requested_at: Faker::Time.between(from: 30.days.ago, to: Time.current),
       bank_data: bank_details # This goes into your JSONB column
     )

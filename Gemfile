@@ -27,6 +27,7 @@ gem "pundit"
 
 # --- BUSINESS LOGIC & DATA ---
 gem "money-rails"
+gem 'pagy', '~> 9.3'
 gem "redis", ">= 4.0.1"
 gem "sidekiq"
 

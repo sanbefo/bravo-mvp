@@ -5,11 +5,17 @@ class CreditApplicationsController < ApplicationController
     sortable_columns = %w[id full_name country status requested_amount]
     column = sortable_columns.include?(params[:sort]) ? params[:sort] : "created_at"
     direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+    query = params[:query]
 
-    @applications = CreditApplication.all
+    cache_key = "credit_applications:index:#{query}:#{column}:#{direction}"
+    @applications = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
+      applications = CreditApplication.all
+      if query.present?
+        applications = applications.where(query)
+      end
 
-    @applications = @applications.by_country(params[:country]) if params[:country].present?
-    @applications = @applications.order("#{column} #{direction}")
+      applications.order("#{column} #{direction}").to_a
+    end
   end
 
   def show
@@ -46,13 +52,13 @@ class CreditApplicationsController < ApplicationController
     @application = current_user.applications.build(application_params)
     @application.status = :pending
 
-    # service = CreateCreditApplication.new(application_params)
-    # @application = service.call
+    if @application.save
+      Rails.cache.delete_matched("credit_applications:index*")
 
-    redirect_to @application
-  rescue => e
-    flash[:error] = e.message
-    render :new
+      redirect_to @application, notice: "Application created"
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
