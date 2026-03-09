@@ -1,7 +1,7 @@
 .max-w-md.mx-auto.px-4.py-16
   -# Header
   .mb-8.text-center
-    %h1.text-3xl.font-bold.text-main-text Welcome Back
+    %h1.text-3xl.font-bold.text-gray-900 Welcome Back
     %p.text-gray-500.mt-2 Please enter your credentials to access the site.
 
   -# Login Card
@@ -11,7 +11,7 @@
       .space-y-2
         = f.label :email, class: "block text-sm font-semibold text-primary"
         = f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "name@company.com",
-          class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+          class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-gray-900 py-2.5"
 
       .space-y-2
         .flex.justify-between.items-center
@@ -19,7 +19,7 @@
           - if devise_mapping.recoverable?
             = link_to "Forgot password?", new_password_path(resource_name), class: "text-xs text-gray-400 hover:text-accent transition"
         = f.password_field :password, autocomplete: "current-password", placeholder: "••••••••",
-          class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-main-text py-2.5"
+          class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-gray-900 py-2.5"
 
       - if devise_mapping.rememberable?
         .flex.items-center.gap-2

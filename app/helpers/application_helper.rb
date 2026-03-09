@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def flag_for(country_code)
     return if country_code.blank?
 

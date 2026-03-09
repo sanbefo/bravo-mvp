@@ -75,3 +75,28 @@
 
     transition: opacity 0.2s ease;
 }
+
+/* app/assets/stylesheets/application.tailwind.css */
+
+.pagy-custom nav {
+    @apply flex items-center gap-1;
+}
+
+.pagy-custom a,
+.pagy-custom .page.current,
+.pagy-custom .page.prev,
+.pagy-custom .page.next {
+    @apply flex items-center justify-center w-10 h-10 rounded-lg border border-highlight bg-white text-sm font-bold text-gray-900 transition-all;
+}
+
+.pagy-custom a:hover {
+    @apply bg-highlight text-primary border-primary/20 shadow-sm;
+}
+
+.pagy-custom .page.current {
+    @apply bg-primary text-white border-primary shadow-md;
+}
+
+.pagy-custom .page.disabled {
+    @apply opacity-40 cursor-not-allowed bg-gray-50;
+}

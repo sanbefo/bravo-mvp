@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  include Pagy::Backend
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   before_action :log_action_details, :set_request_details, :configure_permitted_parameters, if: :devise_controller?
 

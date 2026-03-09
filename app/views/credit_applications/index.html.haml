@@ -20,7 +20,7 @@
             %path{d: "M19 9l-7 7-7-7", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round"}
   .flex.justify-between.items-center.mb-8
     %div
-      %h1.text-3xl.font-bold.text-main-text Credit Applications
+      %h1.text-3xl.font-bold.text-gray-900 Credit Applications
       %p.text-sm.text-gray-500 Manage and review incoming credit requests.
     - unless current_user.credit_applications.pending.exists?
       = link_to users_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
@@ -49,7 +49,7 @@
             %tr.hover:bg-gray-50.transition-colors
               %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{app.id}"
               %td.px-6.py-4
-                .text-sm.font-bold.text-main-text= app.user.username.titleize
+                .text-sm.font-bold.text-gray-900= app.user.username.titleize
               %td.px-6.py-4.text-sm.text-gray-600
                 .flex.items-center.gap-3
                   = flag_for(app.country)
@@ -60,3 +60,6 @@
                 = link_to app, class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1", data: { turbo: false } do
                   View
                   %span →
+        .mt-8.flex.justify-center.pb-8
+          .pagy-custom
+            != pagy_nav(@pagy) if @pagy.pages > 1

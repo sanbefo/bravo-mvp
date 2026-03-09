@@ -3,7 +3,7 @@
     = link_to "← Back to Profile", user_path(@user.slug), class: "text-accent hover:text-secondary text-sm font-medium transition"
   .flex.justify-between.items-start.mb-8
     %div
-      %h1.text-3xl.font-bold.text-main-text Edit User Profile
+      %h1.text-3xl.font-bold.text-gray-900 Edit User Profile
       %p.text-sm.text-gray-500.mt-1 Modifying record for ID: ##{@user.id}
   = form_with model: @user, local: true do |f|
     .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight.mb-8
@@ -14,22 +14,22 @@
           = f.label :first_name, class: "text-sm font-semibold text-primary"
           .col-span-2
             = f.text_field :first_name, autofocus: true,
-              class: "w-full rounded-xl border-gray-200 bg-gray-50/50 px-4 py-2.5 text-main-text shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
+              class: "w-full rounded-xl border-gray-200 bg-gray-50/50 px-4 py-2.5 text-gray-900 shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
         .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight.items-center
           = f.label :last_name, class: "text-sm font-semibold text-primary"
           .col-span-2
             = f.text_field :last_name,
-              class: "w-full rounded-xl border-gray-200 bg-gray-50/50 px-4 py-2.5 text-main-text shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
+              class: "w-full rounded-xl border-gray-200 bg-gray-50/50 px-4 py-2.5 text-gray-900 shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
         .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight.items-center
           = f.label :document, "Document ID", class: "text-sm font-semibold text-primary"
           .col-span-2
             = f.text_field :document,
-              class: "w-full rounded-xl border-gray-200 bg-gray-50/80 px-4 py-2.5 text-main-text font-mono shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
+              class: "w-full rounded-xl border-gray-200 bg-gray-50/80 px-4 py-2.5 text-gray-900 font-mono shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
         .grid.grid-cols-3.gap-4.px-6.py-5.items-center
           = f.label :email, class: "text-sm font-semibold text-primary"
           .col-span-2
             = f.email_field :email,
-              class: "w-full rounded-xl border-gray-200 bg-gray-50/50 px-4 py-2.5 text-main-text shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
+              class: "w-full rounded-xl border-gray-200 bg-gray-50/50 px-4 py-2.5 text-gray-900 shadow-inner focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 transition-all duration-200 outline-none"
     .flex.items-center.justify-end.gap-6.mt-10
       = link_to "Cancel", user_path(@user), class: "text-sm font-bold text-gray-400 hover:text-primary transition-colors"
       = f.submit "Save Changes",

@@ -13,7 +13,7 @@
   -# Header
   .flex.justify-between.items-center.mb-8
     %div
-      %h1.text-3xl.font-bold.text-main-text Platform Users
+      %h1.text-3xl.font-bold.text-gray-900 Platform Users
       %p.text-sm.text-gray-500 View and manage registered user accounts.
     .flex.gap-3
       = link_to credit_applications_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
@@ -40,7 +40,7 @@
               %td.px-6.py-4.text-sm.font-medium.text-gray-400= "##{user.id}"
               %td.px-6.py-4
                 .flex.flex-col
-                  %span.text-sm.font-bold.text-main-text= "#{user.first_name} #{user.last_name}".titleize
+                  %span.text-sm.font-bold.text-gray-900= "#{user.first_name} #{user.last_name}".titleize
               %td.px-6.py-4
                 .flex.flex-col
                   %span.text-sm= user.email

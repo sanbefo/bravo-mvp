@@ -5,16 +5,33 @@ class CreditApplicationsController < ApplicationController
     sortable_columns = %w[id full_name country status requested_amount]
     column = sortable_columns.include?(params[:sort]) ? params[:sort] : "created_at"
     direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
-    query = params[:query]
 
-    cache_key = "credit_applications:index:#{query}:#{column}:#{direction}"
-    @applications = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      applications = CreditApplication.all
-      if query.present?
-        applications = applications.where(query)
+    scope = CreditApplication.all.includes(:user)
+    scope = scope.where("full_name ILIKE ?", "%#{params[:query]}%") if params[:query].present?
+    scope = scope.by_country(params[:country]) if params[:country].present?
+
+    count_cache_key = "credit_apps:count:q:#{params[:query]}:c:#{params[:country]}"
+    total_count = Rails.cache.fetch(count_cache_key, expires_in: 30.minutes) do
+      scope.count
+    end
+
+    @pagy, applications_scope = pagy(scope.order("#{column} #{direction}"), count: total_count)
+    results_cache_key = "credit_apps:results:p#{@pagy.page}:i#{@pagy.items}:q:#{params[:query]}:c:#{params[:country]}:s:#{column}:d:#{direction}"
+
+    @applications = Rails.cache.fetch(results_cache_key, expires_in: 5.minutes) do
+      applications_scope.to_a
+    end
+
+    pagy_headers_merge(@pagy)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: {
+          data: @applications,
+          meta: pagy_metadata(@pagy)
+        }
       end
-
-      applications.order("#{column} #{direction}").to_a
     end
   end
 
@@ -53,8 +70,7 @@ class CreditApplicationsController < ApplicationController
     @application.status = :pending
 
     if @application.save
-      Rails.cache.delete_matched("credit_applications:index*")
-
+      Rails.cache.delete_matched("credit_apps:*")
       redirect_to @application, notice: "Application created"
     else
       render :new, status: :unprocessable_entity

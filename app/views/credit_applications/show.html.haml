@@ -3,7 +3,7 @@
     = link_to "← Back to Applications", credit_applications_path, class: "text-accent hover:text-secondary text-sm font-medium transition"
   .flex.justify-between.items-start.mb-8
     %div
-      %h1.text-3xl.font-bold.text-main-text Application Details
+      %h1.text-3xl.font-bold.text-gray-900 Application Details
       %p.text-sm.text-gray-500.mt-1 Viewing record for ID: ##{@application.id}
     - if @application.pending?
       .flex.gap-3
@@ -14,25 +14,25 @@
     .p-0
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Full Name
-        .col-span-2.text-main-text.font-medium= @application.full_name
+        .col-span-2.text-gray-900.font-medium= @application.full_name
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Country
-        .col-span-2.text-main-text.flex.items-center.gap-2
+        .col-span-2.text-gray-900.flex.items-center.gap-2
           = flag_for(@application.country)
           %span.text-sm.font-bold.text-text-main= country_name(@application.country)
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Review Status
-        .col-span-2.text-main-text= status_badge(@application.status)
+        .col-span-2.text-gray-900= status_badge(@application.status)
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Document ID
-        .col-span-2.text-main-text= @application.document_id
+        .col-span-2.text-gray-900= @application.document_id
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Requested Amount
-        .col-span-2.text-main-text.font-bold.text-accent
+        .col-span-2.text-gray-900.font-bold.text-accent
           = number_to_currency(@application.requested_amount)
       .grid.grid-cols-3.gap-4.px-6.py-5.border-b.border-highlight
         .text-sm.font-semibold.text-primary Requested At
-        .col-span-2.text-main-text= @application.requested_at.strftime("%B %d, %Y")
+        .col-span-2.text-gray-900= @application.requested_at.strftime("%B %d, %Y")
 
   .bg-white.shadow-xl.rounded-2xl.overflow-hidden.border.border-highlight
     .bg-highlight.px-6.py-4
@@ -48,7 +48,7 @@
           %tr
             %td.px-6.py-4.whitespace-nowrap.text-sm.font-semibold.text-primary.bg-gray-50
               = key.to_s.titleize
-              %td.px-6.py-4.text-sm.text-main-text
+              %td.px-6.py-4.text-sm.text-gray-900
                 - if key.to_s.underscore == "account_number"
                   -# Render the formatted version with the clipboard controller
                   .flex.items-center.justify-between(data-controller="clipboard")
