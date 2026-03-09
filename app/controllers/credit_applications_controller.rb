@@ -16,7 +16,7 @@ class CreditApplicationsController < ApplicationController
     end
 
     @pagy, applications_scope = pagy(scope.order("#{column} #{direction}"), count: total_count)
-    results_cache_key = "credit_apps:results:p#{@pagy.page}:i#{@pagy.items}:q:#{params[:query]}:c:#{params[:country]}:s:#{column}:d:#{direction}"
+    results_cache_key = "credit_apps:results:p#{@pagy.page}:i#{@pagy.vars[:items]}:q:#{params[:query]}:c:#{params[:country]}:s:#{column}:d:#{direction}"
 
     @applications = Rails.cache.fetch(results_cache_key, expires_in: 5.minutes) do
       applications_scope.to_a
