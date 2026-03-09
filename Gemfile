@@ -4,6 +4,7 @@ gem "connection_pool", "< 3.0"
 
 # --- CORE ---
 gem "bootsnap", require: false
+gem 'lograge'
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 gem "rails", "~> 7.1.3"

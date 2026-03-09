@@ -73,4 +73,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.log_tags = [ :request_id ]
+  config.lograge.enabled = true
+  # This ensures the request_id is included in the single-line log
+  config.lograge.custom_options = lambda do |event|
+    { request_id: event.payload[:request_id] }
+  end
 end

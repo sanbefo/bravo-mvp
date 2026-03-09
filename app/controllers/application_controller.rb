@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  before_action :set_request_details, :configure_permitted_parameters, if: :devise_controller?
+  before_action :log_action_details, :set_request_details, :configure_permitted_parameters, if: :devise_controller?
 
   protected
 
@@ -21,5 +21,15 @@ class ApplicationController < ActionController::Base
   def set_request_details
     # Rails automatically generates a UUID for every request
     Current.request_id = request.request_id
+  end
+
+  def log_action_details
+    # This gives you a clear start line for every request
+    Rails.logger.info "--- [Action: #{controller_name}##{action_name}] [ID: #{request.request_id}] ---"
+  end
+
+  def set_current_request_id
+    Current.request_id = request.request_id
+    Current.user_id = current_user&.id # if using Devise
   end
 end
