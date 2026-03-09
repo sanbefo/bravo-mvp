@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_request_details, :configure_permitted_parameters, if: :devise_controller?
 
   protected
 
@@ -16,5 +16,10 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     render json: { error: "Not authorized" }, status: :forbidden
+  end
+
+  def set_request_details
+    # Rails automatically generates a UUID for every request
+    Current.request_id = request.request_id
   end
 end

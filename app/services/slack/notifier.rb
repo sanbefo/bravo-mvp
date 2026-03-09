@@ -4,7 +4,7 @@ require "json"
 
 module Slack
   class Notifier
-    def self.user_created(user)
+    def user_created(user, request_id)
       webhook_url = Rails.application.credentials.slack[:webhook_url]
 
       uri = URI.parse(webhook_url)
