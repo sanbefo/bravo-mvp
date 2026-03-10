@@ -1,0 +1,18 @@
+!!!
+%html
+  %head
+    %meta{ content: "text/html; charset=UTF-8", "http-equiv": "Content-Type" }
+    %title Bravo - Fintech Multipais
+    %meta{ content: "width=device-width,initial-scale=1", name: "viewport" }
+
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    = favicon_link_tag asset_path('favicon.png'), rel: 'icon', type: 'image/png'
+
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_include_tag "application", "data-turbo-track": "reload", type: "module"
+
+  %body
+    = render "shared/header"
+    = yield

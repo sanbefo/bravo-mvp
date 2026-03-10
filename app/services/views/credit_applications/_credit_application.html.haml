@@ -1,0 +1,14 @@
+%tr.hover:bg-gray-50.transition-colors{ id: dom_id(credit_application) }
+  %td.px-6.py-4.text-sm.font-medium.text-gray-600= "##{credit_application.id}"
+  %td.px-6.py-4
+    .text-sm.font-bold.text-gray-900= credit_application.user.username.titleize
+  %td.px-6.py-4.text-sm.text-gray-600
+    .flex.items-center.gap-3
+      = flag_for(credit_application.country)
+      %span.text-sm.font-bold.text-text-main= country_name(credit_application.country)
+  %td.px-6.py-4
+    = status_badge(credit_application.status)
+  %td.px-6.py-4
+    = link_to credit_application, class: "text-accent hover:text-secondary font-medium text-sm flex items-center gap-1", data: { turbo: false } do
+      View
+      %span →

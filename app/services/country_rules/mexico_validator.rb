@@ -16,7 +16,7 @@ module CountryRules
     private
 
     def validate_curp
-      raise "Invalid CURP format" unless application.document_id.match?(CURP_REGEX)
+      raise "Invalid CURP format" unless application.user.document.match?(CURP_REGEX)
     end
   end
 end

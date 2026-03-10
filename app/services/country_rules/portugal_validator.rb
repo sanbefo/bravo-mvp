@@ -13,7 +13,7 @@ module CountryRules
     private
 
     def validate_nif
-      raise "Invalid NIF format" unless application.document_id.match?(/^\d{9}$/)
+      raise "Invalid NIF format" unless application.user.document.match?(/^\d{9}$/)
     end
   end
 end

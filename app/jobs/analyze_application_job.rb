@@ -11,7 +11,7 @@ class AnalyzeApplicationJob < ApplicationJob
     validator = CreditEvaluationFactory.validator_for(application)
 
     begin
-      validator.validate_income_ratio
+      validator.validate!
       application.approved!
     rescue => e
       application.update(
