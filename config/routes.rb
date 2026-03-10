@@ -15,7 +15,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :credit_applications, only: %i[index show new create edit]
+  resources :credit_applications, only: %i[index show new create edit] do
+    collection do
+      post :bulk_evaluate
+    end
+  end
   resources :users, only: %i[index show edit]
   resources :accounts, only: %i[index show create]
   resources :accounts do

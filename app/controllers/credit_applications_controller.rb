@@ -76,6 +76,11 @@ class CreditApplicationsController < ApplicationController
     end
   end
 
+  def bulk_evaluate
+    EvaluateAllPendingJob.perform_later
+    redirect_to credit_applications_path, notice: "Evaluation process started for all pending applications."
+  end
+
   private
 
   def application_params

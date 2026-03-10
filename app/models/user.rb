@@ -1,18 +1,12 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   after_create_commit :notify_slack
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   extend FriendlyId
   enum role: { user: 0, admin: 1 }
-  devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :rememberable,
-         :validatable,
-         :jwt_authenticatable,
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :validatable, :jwt_authenticatable,
          jwt_revocation_strategy: JwtDenylist
 
   friendly_id :username, use: :slugged
@@ -38,7 +32,7 @@ class User < ApplicationRecord
   private
 
   def notify_slack
-    SlackNotificationJob.perform_async(self.id, Current.request_id)
+    SlackNotificationJob.perform_async(self.id, "user_created", Current.request_id)
   end
 
   def generate_initial_username
