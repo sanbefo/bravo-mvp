@@ -1,6 +1,5 @@
 class User < ApplicationRecord
-  after_create_commit :notify_slack
-
+  encrypts :document, deterministic: true
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   extend FriendlyId
@@ -8,19 +7,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable,
          :rememberable, :validatable, :jwt_authenticatable,
          jwt_revocation_strategy: JwtDenylist
-
   friendly_id :username, use: :slugged
-  # 1. Ensure username is unique and present (for the slug)
   validates :username, presence: true, uniqueness: true
+  validates :document, presence: true, uniqueness: true
   validates :first_name, :last_name, presence: true
-
-  # 2. Run the generator only when the user is first created
   before_validation :generate_initial_username, on: :create
+  after_create_commit :notify_slack
 
   has_many :accounts, dependent: :destroy, inverse_of: :user
   has_many :credit_applications, dependent: :destroy, inverse_of: :user
 
-  # 3. Use the username for URLs (slug)
   def to_param
     username
   end
@@ -36,12 +32,8 @@ class User < ApplicationRecord
   end
 
   def generate_initial_username
-    return if username.present? # Allow manual entry if provided in the form
-
-    # Format: john_doe_1234
+    return if username.present?
     base_name = "#{first_name}_#{last_name}".parameterize(separator: "-")
-
-    # We use SecureRandom to ensure uniqueness before we have an ID
     self.username = loop do
       random_username = "#{base_name}-#{SecureRandom.random_number(1000..9999)}"
       break random_username unless User.exists?(username: random_username)
