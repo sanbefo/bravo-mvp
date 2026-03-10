@@ -9,6 +9,7 @@ class CreditApplication < ApplicationRecord
   validate :only_one_pending_application, on: :create
   scope :by_country, ->(country_code) { where(country: country_code) }
   scope :by_status, ->(status) { where(status: status) }
+  after_commit :broadcast_pending_count
   after_update_commit :notify_slack_on_status_change, if: :saved_change_to_status?
   after_update_commit -> {
     broadcast_replace_to "credit_applications",
@@ -33,5 +34,13 @@ class CreditApplication < ApplicationRecord
 
   def notify_slack_on_status_change
     SlackNotificationJob.perform_async(id, "credit_app_updated", Current.request_id)
+  end
+
+  def broadcast_pending_count
+    broadcast_update_to(
+      "credit_applications",
+      target: "pending_count",
+      html: CreditApplication.pending.count.to_s
+    )
   end
 end
