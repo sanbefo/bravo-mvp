@@ -7,16 +7,16 @@ module CountryRules
       validate_income_ratio
     end
 
-    private
-
-    def validate_curp
-      raise "Invalid CURP format" unless application.document_id.match?(CURP_REGEX)
-    end
-
     def validate_income_ratio
       return if application.requested_amount > application.monthly_income * 6
 
       raise "Requested amount exceeds allowed ratio"
+    end
+
+    private
+
+    def validate_curp
+      raise "Invalid CURP format" unless application.document_id.match?(CURP_REGEX)
     end
   end
 end

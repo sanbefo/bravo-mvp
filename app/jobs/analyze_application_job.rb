@@ -7,10 +7,21 @@ class AnalyzeApplicationJob < ApplicationJob
     application.under_review!
     sleep(rand(5..15))
 
-    # 3. Apply your "Rules" (placeholder for now)
-    application.monthly_income > 2000 ? application.approved! : application.rejected!
-    Rails.cache.delete_matched("credit_apps:*")
+    # Determine the validator based on the country
+    validator = CreditEvaluationFactory.validator_for(application)
 
-    SlackNotificationJob.perform_async(application_id, "credit_app_updated", Current.request_id)
+    begin
+      validator.validate_income_ratio
+      application.approved!
+    rescue => e
+      application.update(
+        status: :rejected,
+        bank_data: application.bank_data.merge(rejection_reason: e.message)
+      )
+      Rails.logger.info "Application ##{application.id} rejected: #{e.message}"
+    ensure
+      SlackNotificationJob.perform_async(application.id, "credit_app_updated", "eval_#{application.id}")
+      Rails.cache.delete_matched("credit_apps:*")
+    end
   end
 end

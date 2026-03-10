@@ -2,9 +2,8 @@ class EvaluateAllPendingJob < ApplicationJob
   queue_as :default
 
   def perform
-    pending_ids = CreditApplication.pending.pluck(:id)
-    pending_ids.each do |app_id|
-      AnalyzeApplicationJob.perform_later(app_id)
+    CreditApplication.pending.find_each do |application|
+      AnalyzeApplicationJob.perform_later(application.id)
     end
   end
 end
