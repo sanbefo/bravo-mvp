@@ -46,8 +46,8 @@ build-minikube: verify-minikube
 
 # --- 3. Deployment & Cleanup ---
 
-## run-bravo-minikube: Builds image and deploys all K8s manifests with health checks
-run-bravo-minikube: verify-kubectl build-minikube
+## deploy-bravo-minikube: Builds image and deploys all K8s manifests with health checks
+deploy-bravo-minikube: verify-kubectl build-minikube
 	@echo "🚀 Starting Deployment: bravo-minikube"
 
 	@echo "1. Applying Namespace..."
@@ -56,22 +56,26 @@ run-bravo-minikube: verify-kubectl build-minikube
 
 	@echo "2. Deploying Postgres..."
 	@kubectl apply -f k8s/postgres.yaml
+	@sleep 2
 	@kubectl wait --for=condition=ready pod -l app=postgres -n bravo-mvp --timeout=300s
 	@echo "✅ Postgres is up."
 
 	@echo "3. Deploying Redis..."
 	@kubectl apply -f k8s/redis.yaml
+	@sleep 2
 	@kubectl wait --for=condition=ready pod -l app=redis -n bravo-mvp --timeout=300s
 	@echo "✅ Redis is up."
 
 	@echo "4. Deploying Sidekiq..."
 	@kubectl apply -f k8s/sidekiq.yaml
+	@sleep 2
 	@kubectl wait --for=condition=ready pod -l app=sidekiq -n bravo-mvp --timeout=300s
 	@echo "✅ Sidekiq is up."
 
 	@echo "5. Deploying Rails Application..."
 	@kubectl apply -f k8s/rails-service.yaml
 	@kubectl apply -f k8s/rails-development.yaml
+	@sleep 2
 	@kubectl wait --for=condition=ready pod -l app=rails -n bravo-mvp --timeout=300s
 	@echo "✅ Rails app is up."
 
@@ -109,6 +113,22 @@ db-setup: verify-kubectl
 	@kubectl exec -n $(NAMESPACE) $(POD_NAME) -- bundle exec rails db:migrate
 	@kubectl exec -n $(NAMESPACE) $(POD_NAME) -- bundle exec rails db:seed
 	@echo "✅ Database is ready."
+
+## port-forward: Forwards local 8080 to the Rails Pod (port 3000)
+port-forward: verify-kubectl
+	@echo "🔍 Finding Rails Pod in bravo-mvp..."
+	$(eval POD_NAME=$(shell kubectl get pods -l app=rails -n bravo-mvp -o jsonpath='{.items[0].metadata.name}' 2>/dev/null))
+	@if [ -z "$(POD_NAME)" ]; then \
+		echo "❌ No Rails Pod found. Is the app running in bravo-mvp?"; exit 1; \
+	fi
+	@echo "🔌 Port-forwarding: http://localhost:3001 -> $(POD_NAME):3000"
+	@sleep 1 && (open http://localhost:3001 || xdg-open http://localhost:3001 || echo "Check http://localhost:3001") &
+	@echo "Press Ctrl+C to stop."
+	@kubectl port-forward $(POD_NAME) 3001:3000 -n bravo-mvp
+
+## run all commands to run the APP_NAME
+run-bravo-mvp: deploy-bravo-minikube db-setup port-forward
+
 # --- 4. Help ---
 
 help:

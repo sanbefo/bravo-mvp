@@ -14,6 +14,9 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  # Ensure this is false if you are testing locally via port-forwarding
+  config.force_ssl = false
+
   # Enable server timing
   config.server_timing = true
 
@@ -83,4 +86,11 @@ Rails.application.configure do
   config.lograge.custom_options = lambda do |event|
     { request_id: event.payload[:request_id] }
   end
+  # config.action_cable.allowed_request_origins = [
+  #   "http://localhost:3001",
+  #   "http://127.0.0.1:3001"
+  # ]
+  # config.action_cable.url = "ws://localhost:3001/cable"
+  # config.hosts << "localhost:3001"
+  # config.hosts << "127.0.0.1:3001"
 end

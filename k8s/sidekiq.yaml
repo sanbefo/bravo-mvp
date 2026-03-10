@@ -4,7 +4,7 @@ metadata:
   name: sidekiq
   namespace: bravo-mvp
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: sidekiq
@@ -23,3 +23,5 @@ spec:
               value: postgres://bravo:bravo123@postgres.bravo-mvp:5432/bravo_db
             - name: REDIS_URL
               value: redis://redis.bravo-mvp:6379/0
+            - name: RAILS_ENV
+              value: "production"

@@ -4,7 +4,7 @@ metadata:
   name: rails-app
   namespace: bravo-mvp
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: rails
@@ -24,3 +24,9 @@ spec:
               value: postgres://bravo:bravo123@postgres.bravo-mvp:5432/bravo_db
             - name: REDIS_URL
               value: redis://redis.bravo-mvp:6379/0
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+            - name: RAILS_ENV
+              value: "production"
+            - name: SECRET_KEY_BASE
+              value: "a_long_consistent_random_string_for_testing_123"
