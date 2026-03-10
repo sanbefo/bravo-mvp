@@ -10,6 +10,18 @@ class CreditApplication < ApplicationRecord
   scope :by_country, ->(country_code) { where(country: country_code) }
   scope :by_status, ->(status) { where(status: status) }
   after_update_commit :notify_slack_on_status_change, if: :saved_change_to_status?
+  after_update_commit -> {
+    broadcast_replace_to "credit_applications",
+    target: "credit_application_#{id}",
+    partial: "credit_applications/credit_application",
+    locals: { credit_application: self }
+  }
+  after_create_commit -> {
+    broadcast_prepend_to "credit_applications",
+    target: "credit_applications_table",
+    partial: "credit_applications/credit_application",
+    locals: { credit_application: self }
+  }
 
   private
 

@@ -11,6 +11,6 @@ class AnalyzeApplicationJob < ApplicationJob
     application.monthly_income > 2000 ? application.approved! : application.rejected!
     Rails.cache.delete_matched("credit_apps:*")
 
-    SlackNotificationJob.perform_async(self.id, "credit_app_updated", Current.request_id)
+    SlackNotificationJob.perform_async(id, "credit_app_updated", Current.request_id)
   end
 end
