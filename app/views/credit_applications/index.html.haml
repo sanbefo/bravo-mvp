@@ -29,7 +29,7 @@
       = link_to new_credit_application_path, class: "bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition duration-200 shadow-sm flex items-center gap-2" do
         %span +
         New Application
-      = button_to 'Run Mass Evaluation', bulk_evaluate_credit_applications_path,
+      = button_to 'Evaluate Pending Applications', bulk_evaluate_credit_applications_path,
         method: :post,
         class: "bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition",
         data: { confirm: "Are you sure? This will analyze all pending applications." }

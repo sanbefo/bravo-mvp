@@ -4,6 +4,7 @@ puts "Generating 100 credit applications..."
 
 CreditApplication.destroy_all
 User.destroy_all
+Rails.cache.clear
 
 user = User.create!(
   first_name: "Santiago",
