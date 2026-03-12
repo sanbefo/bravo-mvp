@@ -263,75 +263,22 @@ app
 
 # ⚙️ Running the Application
 
-## 1️⃣ Clone the repository
-
 ```
-git clone https://github.com/your-repo/bravo-mvp.git
+git clone https://github.com/sanbefo/bravo-mvp
 cd bravo-mvp
 ```
 
----
-
-## 2️⃣ Install dependencies
-
-```
-bundle install
-yarn install
-```
-
----
-
-## 3️⃣ Setup the database
+You need to have `minikube` installed and `kubectl`
+in order to run the application you should execute the following command
 
 ```
-rails db:create
-rails db:migrate
-rails db:seed
+minikube start (if not already done)
+make run-bravo-mvp
 ```
-
----
-
-## 4️⃣ Start required services
-
-Start Redis:
-
-```
-redis-server
-```
-
-Start Sidekiq:
-
-```
-bundle exec sidekiq
-```
-
-Run the Rails server:
-
-```
-bin/dev
-```
-
-Application will run at:
-
-```
-http://localhost:3000
-```
-
----
-
-# 🐳 Docker
-
-Build the Docker image:
-
-```
-docker build -t bravo-mvp .
-```
-
-Run the container:
-
-```
-docker run -p 3000:3000 bravo-mvp
-```
+This will eventually open the browser with the app running
+To login you need to use the following credentials
+email: `santiago@bravo.com`
+password: `muybravo`
 
 ---
 
@@ -363,38 +310,6 @@ These files define:
 * Rails web application
 * Sidekiq worker
 * ingress routing
-
----
-
-# 🧹 Sidekiq Maintenance
-
-To clear Sidekiq queues:
-
-```
-rails sidekiq:clear
-```
-
-This removes:
-
-* queued jobs
-* retries
-* scheduled jobs
-* dead jobs
-
----
-
-# 📈 Performance
-
-Typical request performance:
-
-```
-duration: ~18ms
-db: ~1.5ms
-view: ~11ms
-```
-
-Redis caching helps reduce database load for repeated queries.
-
 ---
 
 # 🚧 Future Improvements
@@ -409,6 +324,6 @@ Potential improvements include:
 
 ---
 
-# 👨‍💻 Author
+# 👨‍💻 Santiago
 
 Developed as part of a **fintech backend engineering technical assessment** demonstrating Rails architecture, background processing, caching, security, and infrastructure deployment.
